@@ -1,0 +1,52 @@
+---
+  - name: Download sha256 checksum
+    shell: "curl  https://storage.googleapis.com/golang/go{{ go_version }}.linux-amd64.tar.gz.sha256"
+    register: go_sha256_checksum
+
+  - name: Download go archive
+    get_url:
+      url: "https://storage.googleapis.com/golang/go{{ go_version }}.linux-amd64.tar.gz"
+      dest: /tmp/
+      checksum: "sha256:{{go_sha256_checksum.stdout}}"
+
+  - name: Unarchive and move go binaries
+    unarchive:
+      src: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+      dest: /usr/local/
+
+  - name: Create symlink to gobin
+    file:
+      src: /usr/local/go/bin/go
+      dest: /usr/bin/go
+      state: link
+      force: true
+
+  - name: Setup workspace
+    file:
+      path: "{{ item.path }}"
+      state: directory
+      mode: 0755
+      owner: vagrant
+      group: vagrant
+    with_items:
+    - { path: '/home/vagrant/go-workspace/src' }
+    - { path: '/home/vagrant/go-workspace/pkg' }
+    - { path: '/home/vagrant/go-workspace/bin' }
+
+  - name: Set GOPATH
+    lineinfile:
+      dest: /etc/environment
+      regexp: ^GOPATH=
+      line: GOPATH=/home/vagrant/go-workspace
+
+  - name: Update PATH
+    replace:
+      dest: /etc/environment
+      regexp: '^(PATH.*)(")$'
+      replace: '\1:/home/vagrant/go-workspace/bin\2'
+    become: true
+
+  - name: Remove binary
+    file:
+      path: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+      state: absent

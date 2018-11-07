@@ -1,0 +1,42 @@
+---
+- hosts: all
+  vars:
+    cf_cli_version: "6.40.0"
+    maven_version: "3.5.4"
+    atom_version: "1.26.1"
+    gradle_version: "4.10.2"
+    go_version: "1.11.1"
+    compliance_masonry_version: "1.1.5"
+    bosh_cli_version: "5.3.1"
+    yq_linux_version: "1.14.0"
+    terraform_version: "0.11.10"
+    bosh_bootloader_version: "6.10.18"
+    credhub_cli_version: "2.1.0"
+    fly_version: "3.14.1"
+    groovy_version: "2.4.15"
+    hub_version: "2.5.1"
+    docker_users:
+      - vagrant
+  gather_facts: yes
+  strategy: free
+  become: yes
+  roles:
+    - apt-fast
+    - update
+    - developer_packages
+    - git
+    - geerlingguy.docker
+    - cf_cli
+    - maven
+    - gradle
+    - go
+    - compliance_masonry
+    - gcloud
+    - bosh
+    - fly
+    - credhub
+    - groovy
+    - json2yaml
+    - hub
+    - tmux
+    - update

@@ -1,0 +1,16 @@
+---
+  - name: add git-core ppa
+    apt_repository:
+      repo: 'ppa:git-core/ppa'
+
+  - name: update
+    command: apt-fast -y update
+
+  - name: upgrade
+    command: apt-fast -y upgrade
+
+  - name: install git
+    command: apt-fast -y install {{item}}
+    with_items:
+      - gitk
+      - git-gui

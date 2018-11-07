@@ -1,0 +1,58 @@
+---
+  - name: install dependencies
+    command: apt-fast -y install {{item}}
+    with_items:
+      - build-essential
+      - zlibc
+      - zlib1g-dev
+      - ruby
+      - ruby-dev
+      - openssl
+      - libxslt-dev
+      - libxml2-dev
+      - libssl-dev
+      - libreadline6-dev
+      - libyaml-dev
+      - libsqlite3-dev
+      - sqlite3
+      - libcurl4-openssl-dev
+
+  - name: download bosh-cli
+    get_url:
+      url: "https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-{{ bosh_cli_version }}-linux-amd64"
+      dest: /usr/local/bin/bosh2
+      mode: "a+x"
+
+  - name: bosh2 to bosh symlink
+    file:
+        src: /usr/local/bin/bosh2
+        dest: /usr/local/bin/bosh
+        state: link
+
+  - gem:
+      name: bosh-gen
+      state: latest
+      user_install: no
+
+  - gem:
+      name: cf-uaac
+      state: latest
+      user_install: no
+
+  - name: install yq-linux
+    get_url:
+        url: "https://github.com/mikefarah/yq/releases/download/{{ yq_linux_version }}/yq_linux_amd64"
+        dest: /usr/local/bin/yaml
+        mode: "a+x"
+
+  - name: install terraform
+    unarchive:
+        src: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+        dest: /usr/local/bin
+        remote_src: True
+
+  - name: install bosh-bootloader
+    get_url:
+      url: "https://github.com/cloudfoundry/bosh-bootloader/releases/download/v{{ bosh_bootloader_version }}/bbl-v{{ bosh_bootloader_version }}_linux_x86-64"
+      dest: /usr/local/bin/bbl
+      mode: "a+x"

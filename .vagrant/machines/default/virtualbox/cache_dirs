@@ -1,0 +1,3 @@
+/var/cache/apt/archives
+/var/lib/apt/lists
+/var/lib/gems/2.5.0/cache

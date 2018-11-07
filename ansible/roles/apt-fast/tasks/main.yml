@@ -1,0 +1,19 @@
+---
+  - apt_repository:
+      repo: ppa:apt-fast/stable
+      state: present
+
+  - name: update
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install packages
+    apt:
+      name: "apt-fast"
+
+  - name: set apt-fast configuration
+    copy:
+      src: apt-fast.conf
+      dest: /etc/apt-fast.conf
+      mode: 0644

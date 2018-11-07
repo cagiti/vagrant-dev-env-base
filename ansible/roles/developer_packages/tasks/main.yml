@@ -1,0 +1,39 @@
+---
+  - name: install packages
+    command: apt-fast -y install {{item}}
+    with_items:
+      - putty-tools
+      - dos2unix
+      - wmctrl
+      - byzanz
+      - alien
+      - tree
+      - jq
+      - xmlstarlet
+      - multitail
+      - ldap-utils
+      - openjdk-8-jdk
+      - openjdk-8-source
+      - ant
+      - ngrep
+      - nmap
+      - sslscan
+      - dnsutils
+      - graphviz
+      - zram-config
+      - xdg-utils
+      - chromium-browser
+      - unzip
+      - gnome-system-monitor
+      - baobab
+      - wkhtmltopdf
+      - bash-completion
+      - autojump
+      - nano
+      - python
+      - python-pip
+      - locate
+      - curl
+      - build-essential
+      - vim-gui-common
+      - vim-runtime

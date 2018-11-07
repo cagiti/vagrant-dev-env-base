@@ -1,0 +1,11 @@
+---
+  - name: install packages
+    command: apt-fast -y install tmux
+
+  - name: set apt-fast configuration
+    copy:
+      src: tmux.conf
+      dest: /home/vagrant/.tmux.conf
+      mode: 0644
+      owner: vagrant
+      group: vagrant
